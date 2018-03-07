@@ -260,7 +260,7 @@ namespace Heat
             }
         }
 
-        public Task<Stream> GetMap()
+        public Task<Stream> GetMap(string mapType)
         {
             if (_imageDimensions.X > MaxFreeTierImageDimensions.X || _imageDimensions.Y > MaxFreeTierImageDimensions.Y)
                 throw new NotSupportedException("Images greater than " + MaxFreeTierImageDimensions.X + "x" +
@@ -273,7 +273,7 @@ namespace Heat
 
             var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
                        "&zoom=" + _zoom + "&size=" + _imageDimensions.X + "x" + _imageDimensions.Y +
-                       "&maptype=roadmap&sensor=false";
+                       "&maptype=roadmap" + mapType;
 
             using (var wc = new WebClient())
             {
@@ -281,7 +281,7 @@ namespace Heat
             }
         }
 
-        public Task<Stream> GetMap(string googleClientId, string googleSecretKey)
+        public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType)
         {
             if (_imageDimensions.X > MaxPremiumTierImageDimensions.X ||
                 _imageDimensions.Y > MaxPremiumTierImageDimensions.Y)
@@ -294,7 +294,7 @@ namespace Heat
 
             var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
                        "&zoom=" + _zoom + "&client=" + googleClientId + "&size=" + _imageDimensions.X + "x" +
-                       _imageDimensions.Y + "&maptype=roadmap&sensor=false";
+                       _imageDimensions.Y + "&maptype=" + mapType;
 
             path = Sign(path, googleSecretKey);
 

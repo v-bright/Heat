@@ -33,7 +33,7 @@ namespace Test
 
             var heatmap = new Heatmap(_pointList, viewPort, Heatmap.MaxFreeTierImageDimensions);
 
-            using (var mapStream = await heatmap.GetMap())
+            using (var mapStream = await heatmap.GetMap(MapType.RoadMap))
             using (var sourceImage = new Bitmap(mapStream))
             using (var canvas = new Bitmap(sourceImage, sourceImage.Width, sourceImage.Height))
             {
