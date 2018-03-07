@@ -27,7 +27,10 @@ namespace Heat
 
         public abstract double Flattening { get; }
 
-        public virtual RectLatLng Bounds => new RectLatLng(-180, 90, 180, -90);
+        public virtual RectLatLng Bounds
+        {
+            get { return new RectLatLng(-180, 90, 180, -90); }
+        }
 
         public abstract LongPoint FromLatLngToPixel(double lat, double lng, int zoom);
 
@@ -43,7 +46,9 @@ namespace Heat
             if (!useCache)
                 return FromLatLngToPixel(p.Lat, p.Lng, zoom);
 
-            if (_fromLatLngToPixelCache[zoom].TryGetValue(p, out var ret))
+            LongPoint ret;
+
+            if (_fromLatLngToPixelCache[zoom].TryGetValue(p, out ret))
                 return ret;
 
             ret = FromLatLngToPixel(p.Lat, p.Lng, zoom);
@@ -67,7 +72,9 @@ namespace Heat
             if (!useCache)
                 return FromPixelToLatLng(p.X, p.Y, zoom);
 
-            if (_fromPixelToLatLngCache[zoom].TryGetValue(p, out var ret))
+            PointLatLng ret;
+
+            if (_fromPixelToLatLngCache[zoom].TryGetValue(p, out ret))
                 return ret;
 
             ret = FromPixelToLatLng(p.X, p.Y, zoom);

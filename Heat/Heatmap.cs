@@ -17,7 +17,7 @@ namespace Heat
     {
         #region Fields
 
-        private readonly PointManager _pointManager; 
+        private readonly PointManager _pointManager;
         private readonly PointLatLng _mapCenter;
         private readonly LongPoint _northWestPixel;
         private readonly LongPoint _startTile;
@@ -118,19 +118,19 @@ namespace Heat
         private static string Sign(string url, string keyString)
         {
             // converting key to bytes will throw an exception, need to replace '-' and '_' characters first.
-            string usablePrivateKey = keyString.Replace("-", "+").Replace("_", "/");
-            byte[] privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
+            var usablePrivateKey = keyString.Replace("-", "+").Replace("_", "/");
+            var privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
 
-            Uri uri = new Uri(url);
-            byte[] encodedPathAndQueryBytes = Encoding.ASCII.GetBytes(uri.LocalPath + uri.Query);
+            var uri = new Uri(url);
+            var encodedPathAndQueryBytes = Encoding.ASCII.GetBytes(uri.LocalPath + uri.Query);
 
             // compute the hash
-            using (HMACSHA1 algorithm = new HMACSHA1(privateKeyBytes))
+            using (var algorithm = new HMACSHA1(privateKeyBytes))
             {
-                byte[] hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
+                var hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
 
                 // convert the bytes to string and make url-safe by replacing '+' and '/' characters
-                string signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
+                var signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
 
                 // Add the signature to the existing URI.
                 return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;
@@ -152,12 +152,12 @@ namespace Heat
         }
 
         public Heatmap(IEnumerable<PointLatLng> points, RectLatLng viewPort)
-            : this(points, new[] { viewPort.LocationTopLeft, viewPort.LocationRightBottom }, MaxFreeTierImageDimensions)
+            : this(points, new[] {viewPort.LocationTopLeft, viewPort.LocationRightBottom}, MaxFreeTierImageDimensions)
         {
         }
 
         public Heatmap(IEnumerable<PointLatLng> points, RectLatLng viewPort, LongPoint imageDimensions)
-            : this(points, new[] { viewPort.LocationTopLeft, viewPort.LocationRightBottom }, imageDimensions)
+            : this(points, new[] {viewPort.LocationTopLeft, viewPort.LocationRightBottom}, imageDimensions)
         {
         }
 
@@ -189,7 +189,8 @@ namespace Heat
 
             _mapCenter = bounds.LocationMiddle;
 
-            _northWestPixel = _pointManager.GetTopLeftPixelForLatLngBounds(bounds, _tileOffsets.X, _tileOffsets.Y, _zoom);
+            _northWestPixel =
+                _pointManager.GetTopLeftPixelForLatLngBounds(bounds, _tileOffsets.X, _tileOffsets.Y, _zoom);
         }
 
         #endregion
@@ -208,7 +209,8 @@ namespace Heat
                     var yDiff = y - _startTile.Y;
 
                     graphics.DrawImage(tempImage,
-                        new PointF((float) _tileOffsets.X + xDiff * TileUnit, (float) _tileOffsets.Y + yDiff * TileUnit));
+                        new PointF((float) _tileOffsets.X + xDiff * TileUnit,
+                            (float) _tileOffsets.Y + yDiff * TileUnit));
                 }
             }
         }
@@ -261,35 +263,45 @@ namespace Heat
         public Task<Stream> GetMap()
         {
             if (_imageDimensions.X > MaxFreeTierImageDimensions.X || _imageDimensions.Y > MaxFreeTierImageDimensions.Y)
-                throw new NotSupportedException($"Images greater than {MaxFreeTierImageDimensions.X}x{MaxFreeTierImageDimensions.Y} require a valid client Id and secret.");
+                throw new NotSupportedException("Images greater than " + MaxFreeTierImageDimensions.X + "x" +
+                                                MaxFreeTierImageDimensions.Y +
+                                                " require a valid client Id and secret.");
 
             //Avoid epsilon values in these strings, it messes with the image retrieval
             var lat = _mapCenter.Lat.ToString("0." + new string('#', 339));
             var lng = _mapCenter.Lng.ToString("0." + new string('#', 339));
 
-            string path = "http://maps.googleapis.com/maps/api/staticmap" + $"?center={lat},{lng}" +
-                          $"&zoom={_zoom}" + $"&size={_imageDimensions.X}x{_imageDimensions.Y}" + "&maptype=roadmap&sensor=false";
+            var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
+                       "&zoom=" + _zoom + "&size=" + _imageDimensions.X + "x" + _imageDimensions.Y +
+                       "&maptype=roadmap&sensor=false";
 
-            using (WebClient wc = new WebClient())
+            using (var wc = new WebClient())
+            {
                 return wc.OpenReadTaskAsync(path);
+            }
         }
 
         public Task<Stream> GetMap(string googleClientId, string googleSecretKey)
         {
-            if (_imageDimensions.X > MaxPremiumTierImageDimensions.X || _imageDimensions.Y > MaxPremiumTierImageDimensions.Y)
-                throw new NotSupportedException($"Images greater than {MaxPremiumTierImageDimensions.X}x{MaxPremiumTierImageDimensions.Y} are not supported.");
+            if (_imageDimensions.X > MaxPremiumTierImageDimensions.X ||
+                _imageDimensions.Y > MaxPremiumTierImageDimensions.Y)
+                throw new NotSupportedException("Images greater than " + MaxPremiumTierImageDimensions.X + "x" +
+                                                MaxPremiumTierImageDimensions.Y + " are not supported.");
 
             //Avoid epsilon values in these strings, it messes with the image retrieval
             var lat = _mapCenter.Lat.ToString("0." + new string('#', 339));
             var lng = _mapCenter.Lng.ToString("0." + new string('#', 339));
 
-            string path = "http://maps.googleapis.com/maps/api/staticmap"+ $"?center={lat},{lng}" +
-                          $"&zoom={_zoom}" + $"&client={googleClientId}" + $"&size={_imageDimensions.X}x{_imageDimensions.Y}" + "&maptype=roadmap&sensor=false";
+            var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
+                       "&zoom=" + _zoom + "&client=" + googleClientId + "&size=" + _imageDimensions.X + "x" +
+                       _imageDimensions.Y + "&maptype=roadmap&sensor=false";
 
             path = Sign(path, googleSecretKey);
 
-            using (WebClient wc = new WebClient())
+            using (var wc = new WebClient())
+            {
                 return wc.OpenReadTaskAsync(path);
+            }
         }
 
         #endregion
@@ -300,10 +312,10 @@ namespace Heat
         public static IEnumerable<Point> ToPoints(this IEnumerable<PointLatLng> source, LongPoint nwPixel, int zoom)
         {
             return source.Select(point =>
-                                 {
-                                     var pixelPos = MercatorProjection.Instance.FromLatLngToPixel(point, zoom);
-                                     return new Point((int)(pixelPos.X - nwPixel.X), (int)(pixelPos.Y - nwPixel.Y));
-                                 });
+            {
+                var pixelPos = MercatorProjection.Instance.FromLatLngToPixel(point, zoom);
+                return new Point((int) (pixelPos.X - nwPixel.X), (int) (pixelPos.Y - nwPixel.Y));
+            });
         }
     }
 }

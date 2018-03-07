@@ -21,7 +21,7 @@ namespace Heat.Dots
         public static Dictionary<string, Bitmap> GetDots()
         {
             return Enumerable.Range(0, 31)
-                             .Select(x => $"dot{x}.png")
+                             .Select(x => "dot"+x+".png")
                              .ToDictionary(x => x, GetBitmap);
         }
         #endregion

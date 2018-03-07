@@ -10,13 +10,26 @@ namespace Heat
         private const double MaxLongitude = 180;
         public static readonly MercatorProjection Instance = new MercatorProjection();
 
-        public override RectLatLng Bounds => new RectLatLng(MinLongitude, MaxLatitude, MaxLongitude, MinLatitude);
+        public override RectLatLng Bounds
+        {
+            get { return new RectLatLng(MinLongitude, MaxLatitude, MaxLongitude, MinLatitude); }
+        }
 
-        public override LongSize TileSize { get; } = new LongSize(Heatmap.TileUnit, Heatmap.TileUnit);
 
-        public override double Axis => 6378137;
+        public override LongSize TileSize
+        {
+            get { return new LongSize(Heatmap.TileUnit, Heatmap.TileUnit); }
+        }
 
-        public override double Flattening => 1.0 / 298.257223563;
+        public override double Axis
+        {
+            get { return 6378137; }
+        }
+
+        public override double Flattening
+        {
+            get { return 1.0 / 298.257223563; }
+        }
 
         public override LongPoint FromLatLngToPixel(double lat, double lng, int zoom)
         {

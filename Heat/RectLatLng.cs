@@ -8,7 +8,7 @@ namespace Heat
     {
         public static readonly RectLatLng Empty;
 
-        public RectLatLng(PointLatLng nw, PointLatLng se)
+        public RectLatLng(PointLatLng nw, PointLatLng se) : this()
         {
             Lng = nw.Lng;
             Lat = nw.Lat;
@@ -17,7 +17,7 @@ namespace Heat
             IsEmpty = false;
         }
 
-        public RectLatLng(double leftLng, double topLat, double rightLng, double bottomLat)
+        public RectLatLng(double leftLng, double topLat, double rightLng, double bottomLat) : this()
         {
             Lng = leftLng;
             Lat = topLat;
@@ -28,7 +28,7 @@ namespace Heat
 
         public PointLatLng LocationTopLeft
         {
-            get => new PointLatLng(Lat, Lng);
+            get { return new PointLatLng(Lat, Lng); }
             set
             {
                 Lng = value.Lng;
@@ -58,7 +58,7 @@ namespace Heat
 
         public SizeLatLng Size
         {
-            get => new SizeLatLng(HeightLat, WidthLng);
+            get { return new SizeLatLng(HeightLat, WidthLng); }
             set
             {
                 WidthLng = value.WidthLng;
@@ -74,15 +74,27 @@ namespace Heat
 
         public double HeightLat { get; set; }
 
-        public double Left => Lng;
+        public double Left
+        {
+            get { return Lng; }
+        }
 
-        public double Top => Lat;
+        public double Top
+        {
+            get { return Lat; }
+        }
 
-        public double Right => Lng + WidthLng;
+        public double Right
+        {
+            get { return Lng + WidthLng; }
+        }
 
-        public double Bottom => Lat - HeightLat;
+        public double Bottom
+        {
+            get { return Lat - HeightLat; }
+        }
 
-        public bool IsEmpty { get; }
+        public bool IsEmpty { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -206,8 +218,8 @@ namespace Heat
             var topLeft = MercatorProjection.Instance.FromLatLngToPixel(LocationTopLeft, zoom);
             var bottomRight = MercatorProjection.Instance.FromLatLngToPixel(LocationRightBottom, zoom);
 
-            var translatedPos = new Point((int)(topLeft.X - nwPixel.X), (int)(topLeft.Y - nwPixel.Y));
-            var translatedSize = new Size((int)(bottomRight.X - topLeft.X), (int)(bottomRight.Y - topLeft.Y));
+            var translatedPos = new Point((int) (topLeft.X - nwPixel.X), (int) (topLeft.Y - nwPixel.Y));
+            var translatedSize = new Size((int) (bottomRight.X - topLeft.X), (int) (bottomRight.Y - topLeft.Y));
 
             return new Rectangle(translatedPos, translatedSize);
         }

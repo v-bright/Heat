@@ -125,8 +125,10 @@ namespace Heat
         // use source Color
         private void BlendColor(byte sR, byte sG, byte sB, ref byte dR, ref byte dG, ref byte dB)
         {
-            RgbtoHls(sR, sG, sB, out var sH, out var sL, out var sS);
-            RgbtoHls(dR, dG, dB, out var dH, out var dL, out var dS);
+            ushort sH, sL, sS, dH, dL, dS;
+
+            RgbtoHls(sR, sG, sB, out sH, out sL, out sS);
+            RgbtoHls(dR, dG, dB, out dH, out dL, out dS);
             HlstoRgb(sH, dL, sS, out dR, out dG, out dB);
         }
 
@@ -171,8 +173,10 @@ namespace Heat
         // use source Hue
         private void BlendHue(byte sR, byte sG, byte sB, ref byte dR, ref byte dG, ref byte dB)
         {
-            RgbtoHls(sR, sG, sB, out var sH, out var sL, out var sS);
-            RgbtoHls(dR, dG, dB, out var dH, out var dL, out var dS);
+            ushort sH, sL, sS, dH, dL, dS;
+
+            RgbtoHls(sR, sG, sB, out sH, out sL, out sS);
+            RgbtoHls(dR, dG, dB, out dH, out dL, out dS);
             HlstoRgb(sH, dL, dS, out dR, out dG, out dB);
         }
 
@@ -384,8 +388,10 @@ namespace Heat
         // use source Luminosity
         private void BlendLuminosity(byte sR, byte sG, byte sB, ref byte dR, ref byte dG, ref byte dB)
         {
-            RgbtoHls(sR, sG, sB, out var sH, out var sL, out var sS);
-            RgbtoHls(dR, dG, dB, out var dH, out var dL, out var dS);
+            ushort sH, sL, sS, dH, dL, dS;
+
+            RgbtoHls(sR, sG, sB, out sH, out sL, out sS);
+            RgbtoHls(dR, dG, dB, out dH, out dL, out dS);
             HlstoRgb(dH, sL, dS, out dR, out dG, out dB);
         }
 
@@ -412,8 +418,10 @@ namespace Heat
         // use source Saturation
         private void BlendSaturation(byte sR, byte sG, byte sB, ref byte dR, ref byte dG, ref byte dB)
         {
-            RgbtoHls(sR, sG, sB, out var sH, out var sL, out var sS);
-            RgbtoHls(dR, dG, dB, out var dH, out var dL, out var dS);
+            ushort sH, sL, sS, dH, dL, dS;
+
+            RgbtoHls(sR, sG, sB, out sH, out sL, out sS);
+            RgbtoHls(dR, dG, dB, out dH, out dL, out dS);
             HlstoRgb(dH, dL, sS, out dR, out dG, out dB);
         }
 

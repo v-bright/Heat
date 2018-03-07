@@ -6,19 +6,19 @@ namespace Heat
     {
         public static readonly SizeLatLng Empty;
 
-        public SizeLatLng(SizeLatLng size)
+        public SizeLatLng(SizeLatLng size) : this()
         {
             WidthLng = size.WidthLng;
             HeightLat = size.HeightLat;
         }
 
-        public SizeLatLng(PointLatLng pt)
+        public SizeLatLng(PointLatLng pt) : this()
         {
             HeightLat = pt.Lat;
             WidthLng = pt.Lng;
         }
 
-        public SizeLatLng(double heightLat, double widthLng)
+        public SizeLatLng(double heightLat, double widthLng) : this()
         {
             HeightLat = heightLat;
             WidthLng = widthLng;
@@ -49,7 +49,10 @@ namespace Heat
             return new PointLatLng(size.HeightLat, size.WidthLng);
         }
 
-        public bool IsEmpty => WidthLng == 0d && HeightLat == 0d;
+        public bool IsEmpty
+        {
+            get { return WidthLng == 0d && HeightLat == 0d; }
+        }
 
         public double WidthLng { get; set; }
 

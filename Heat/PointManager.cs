@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 
 namespace Heat
@@ -12,7 +11,8 @@ namespace Heat
 
         public static LongPoint AdjustMapPixelsToTilePixels(LongPoint tileXyPoint, LongPoint mapPixelPoint)
         {
-            return new LongPoint(mapPixelPoint.X - tileXyPoint.X * Heatmap.TileUnit, mapPixelPoint.Y - tileXyPoint.Y * Heatmap.TileUnit);
+            return new LongPoint(mapPixelPoint.X - tileXyPoint.X * Heatmap.TileUnit,
+                mapPixelPoint.Y - tileXyPoint.Y * Heatmap.TileUnit);
         }
 
         #endregion
@@ -119,7 +119,8 @@ namespace Heat
             var centerPixel = MercatorProjection.Instance.FromLatLngToPixel(heatmapBounds.LocationMiddle, zoom);
 
             var startTilePixel = MercatorProjection.Instance.FromTileXyToPixel(startTile);
-            var tileCenter = new LongPoint(startTilePixel.X + _imageDimensions.X / 2, startTilePixel.Y + _imageDimensions.Y / 2);
+            var tileCenter = new LongPoint(startTilePixel.X + _imageDimensions.X / 2,
+                startTilePixel.Y + _imageDimensions.Y / 2);
 
             var offset = new LongPoint(tileCenter.X - centerPixel.X, tileCenter.Y - centerPixel.Y);
 
@@ -128,17 +129,22 @@ namespace Heat
 
         public LongPoint[] GetTileProjectionsForLatLngBounds(RectLatLng bounds, int zoom)
         {
-            var neProj = MercatorProjection.Instance.FromPixelToTileXy(MercatorProjection.Instance.FromLatLngToPixel(bounds.LocationTopLeft, zoom));
-            var swProj = MercatorProjection.Instance.FromPixelToTileXy(MercatorProjection.Instance.FromLatLngToPixel(bounds.LocationRightBottom, zoom));
+            var neProj =
+                MercatorProjection.Instance.FromPixelToTileXy(
+                    MercatorProjection.Instance.FromLatLngToPixel(bounds.LocationTopLeft, zoom));
+            var swProj =
+                MercatorProjection.Instance.FromPixelToTileXy(
+                    MercatorProjection.Instance.FromLatLngToPixel(bounds.LocationRightBottom, zoom));
 
-            return new[] { neProj, swProj };
+            return new[] {neProj, swProj};
         }
 
         public LongPoint GetTopLeftPixelForLatLngBounds(RectLatLng bounds, long xOffset, long yOffset, int zoom)
         {
             var nwPixel = MercatorProjection.Instance.FromLatLngToPixel(bounds.LocationTopLeft, zoom);
 
-            return new LongPoint(nwPixel.X - nwPixel.X % Heatmap.TileUnit - xOffset, nwPixel.Y - nwPixel.Y % Heatmap.TileUnit - yOffset);
+            return new LongPoint(nwPixel.X - nwPixel.X % Heatmap.TileUnit - xOffset,
+                nwPixel.Y - nwPixel.Y % Heatmap.TileUnit - yOffset);
         }
 
         private static double LatRad(double lat)

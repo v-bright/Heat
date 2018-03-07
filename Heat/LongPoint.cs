@@ -9,19 +9,22 @@ namespace Heat
     {
         public static readonly LongPoint Empty = new LongPoint();
 
-        public LongPoint(long x, long y)
+        public LongPoint(long x, long y) : this()
         {
             X = x;
             Y = y;
         }
 
-        public LongPoint(LongSize sz)
+        public LongPoint(LongSize sz) : this()
         {
             X = sz.Width;
             Y = sz.Height;
         }
 
-        public bool IsEmpty => X == 0 && Y == 0;
+        public bool IsEmpty
+        {
+            get { return X == 0 && Y == 0; }
+        }
 
         public long X { get; set; }
 
@@ -95,19 +98,6 @@ namespace Heat
         {
             return "{ X = " + X.ToString(CultureInfo.CurrentCulture) + ", Y = " +
                    Y.ToString(CultureInfo.CurrentCulture) + " }";
-        }
-    }
-
-    internal class GPointComparer : IEqualityComparer<LongPoint>
-    {
-        public bool Equals(LongPoint x, LongPoint y)
-        {
-            return x.X == y.X && x.Y == y.Y;
-        }
-
-        public int GetHashCode(LongPoint obj)
-        {
-            return obj.GetHashCode();
         }
     }
 }

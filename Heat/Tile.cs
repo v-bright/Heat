@@ -10,7 +10,7 @@ namespace Heat
         #region Static Fields
 
         private static readonly Dictionary<string, Bitmap> EmptyTile = new Dictionary<string, Bitmap>();
-        private static int[] _zoomOpacity = new Opacity().BuildZoomMapping();
+        private static readonly int[] ZoomOpacity = new Opacity().BuildZoomMapping();
 
         #endregion
 
@@ -76,14 +76,14 @@ namespace Heat
             Bitmap tile;
             if (points.Length == 0)
             {
-                tile = GetEmptyTile(colorScheme, changeOpacityWithZoom ? _zoomOpacity[zoom] : defaultOpacity);
+                tile = GetEmptyTile(colorScheme, changeOpacityWithZoom ? ZoomOpacity[zoom] : defaultOpacity);
             }
             else
             {
                 tile = GetBlankImage(expandedHeight, expandedWidth);
                 tile = AddPoints(tile, dot, points);
                 tile = Trim(tile, dot);
-                tile = Colorize(tile, colorScheme, changeOpacityWithZoom ? _zoomOpacity[zoom] : defaultOpacity);
+                tile = Colorize(tile, colorScheme, changeOpacityWithZoom ? ZoomOpacity[zoom] : defaultOpacity);
             }
             return tile;
         }

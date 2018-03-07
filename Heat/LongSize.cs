@@ -6,13 +6,13 @@ namespace Heat
     {
         public static readonly LongSize Empty = new LongSize();
 
-        public LongSize(LongPoint pt)
+        public LongSize(LongPoint pt) : this()
         {
             Width = pt.X;
             Height = pt.Y;
         }
 
-        public LongSize(long width, long height)
+        public LongSize(long width, long height) : this()
         {
             Width = width;
             Height = height;
@@ -43,7 +43,10 @@ namespace Heat
             return new LongPoint(size.Width, size.Height);
         }
 
-        public bool IsEmpty => Width == 0 && Height == 0;
+        public bool IsEmpty
+        {
+            get { return Width == 0 && Height == 0; }
+        }
 
         public long Width { get; set; }
 

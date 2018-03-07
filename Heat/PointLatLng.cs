@@ -8,7 +8,7 @@ namespace Heat
     {
         public static readonly PointLatLng Empty = new PointLatLng();
 
-        public PointLatLng(double lat, double lng)
+        public PointLatLng(double lat, double lng) : this()
         {
             Lat = lat;
             Lng = lng;
