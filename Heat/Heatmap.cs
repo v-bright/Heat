@@ -240,6 +240,7 @@ namespace Heat
             }
         }
 
+        //This could be map provider agnostic, so keep it in here for future use
         public void DrawPolygon(Bitmap sourceBitmap, Pen pen, IEnumerable<PointLatLng> drawingCoordinates)
         {
             var drawingPoints = drawingCoordinates.ToPoints(_northWestPixel, _zoom);
@@ -250,6 +251,7 @@ namespace Heat
             }
         }
 
+        //This could be map provider agnostic, so keep it in here for future use
         public void FillPolygon(Bitmap sourceBitmap, SolidBrush brush, IEnumerable<PointLatLng> drawingCoordinates)
         {
             var drawingPoints = drawingCoordinates.ToPoints(_northWestPixel, _zoom);
@@ -262,6 +264,11 @@ namespace Heat
 
         public Task<Stream> GetMap(string mapType)
         {
+            return GetMap(mapType, null);
+        }
+
+        public Task<Stream> GetMap(string mapType, DrawingPath drawingPath)
+        {
             if (_imageDimensions.X > MaxFreeTierImageDimensions.X || _imageDimensions.Y > MaxFreeTierImageDimensions.Y)
                 throw new NotSupportedException("Images greater than " + MaxFreeTierImageDimensions.X + "x" +
                                                 MaxFreeTierImageDimensions.Y +
@@ -271,17 +278,25 @@ namespace Heat
             var lat = _mapCenter.Lat.ToString("0." + new string('#', 339));
             var lng = _mapCenter.Lng.ToString("0." + new string('#', 339));
 
-            var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
-                       "&zoom=" + _zoom + "&size=" + _imageDimensions.X + "x" + _imageDimensions.Y +
-                       "&maptype=roadmap" + mapType;
+            var url = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
+                      "&zoom=" + _zoom + "&size=" + _imageDimensions.X + "x" + _imageDimensions.Y +
+                      "&maptype=roadmap" + mapType;
+
+            if (drawingPath != null)
+                url += "&" + drawingPath;
 
             using (var wc = new WebClient())
             {
-                return wc.OpenReadTaskAsync(path);
+                return wc.OpenReadTaskAsync(url);
             }
         }
 
         public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType)
+        {
+            return GetMap(googleClientId, googleSecretKey, mapType, null);
+        }
+
+        public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType, DrawingPath drawingPath)
         {
             if (_imageDimensions.X > MaxPremiumTierImageDimensions.X ||
                 _imageDimensions.Y > MaxPremiumTierImageDimensions.Y)
@@ -292,15 +307,18 @@ namespace Heat
             var lat = _mapCenter.Lat.ToString("0." + new string('#', 339));
             var lng = _mapCenter.Lng.ToString("0." + new string('#', 339));
 
-            var path = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
-                       "&zoom=" + _zoom + "&client=" + googleClientId + "&size=" + _imageDimensions.X + "x" +
-                       _imageDimensions.Y + "&maptype=" + mapType;
+            var url = "http://maps.googleapis.com/maps/api/staticmap" + "?center=" + lat + "," + lng +
+                      "&zoom=" + _zoom + "&client=" + googleClientId + "&size=" + _imageDimensions.X + "x" +
+                      _imageDimensions.Y + "&maptype=" + mapType;
 
-            path = Sign(path, googleSecretKey);
+            if (drawingPath != null)
+                url += "&" + drawingPath;
+
+            url = Sign(url, googleSecretKey);
 
             using (var wc = new WebClient())
             {
-                return wc.OpenReadTaskAsync(path);
+                return wc.OpenReadTaskAsync(url);
             }
         }
 

@@ -75,6 +75,7 @@
     <Compile Include="MapType.cs" />
     <Compile Include="MercatorProjection.cs" />
     <Compile Include="Opacity.cs" />
+    <Compile Include="DrawingPath.cs" />
     <Compile Include="PointLatLng.cs" />
     <Compile Include="PointManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
