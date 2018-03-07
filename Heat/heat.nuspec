@@ -17,6 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-	   <file src="bin\$configuration$\Heat.dll" />
+	   <file src="bin\$configuration$\Heat.dll" target="lib\net45\" />
   </files>
 </package>
