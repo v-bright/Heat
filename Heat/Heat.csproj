@@ -72,6 +72,7 @@
     <Compile Include="LongSize.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="ImageBlender.cs" />
+    <Compile Include="MapType.cs" />
     <Compile Include="MercatorProjection.cs" />
     <Compile Include="Opacity.cs" />
     <Compile Include="PointLatLng.cs" />
