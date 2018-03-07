@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Heat</id>
+    <version>$version$</version>
+    <title>Heat</title>
+    <authors>Valerie Bright</authors>
+    <owners>Valerie Bright</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>A heat map generation tool that implements the Google Maps Static API</description>
+    <licenseUrl>https://github.com/v-bright/Heat/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/v-bright/Heat</projectUrl>
+    <copyright>Copyright 2018</copyright>
+    <tags>heatmap heat map generation maps</tags>
+	<dependencies>
+      <group targetFramework=".NETFramework4.5" />
+    </dependencies>
+  </metadata>
+  <files>
+	   <file src="bin\$configuration$\Heat.dll" />
+  </files>
+</package>
