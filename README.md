@@ -1,6 +1,6 @@
 # Heat
 
-Heat is a project created with the sole purpose of applying heat map data and annotations to an image retrieved using the Google Maps Static API.
+Heat is a project that applies heat map data and annotations to an image retrieved using the Google Maps Static API.
 
 > Heat, static, map, generation, C#, NET
 
@@ -11,11 +11,11 @@ Heat is a project created with the sole purpose of applying heat map data and an
 
 ## Examples
 
-The solution contains a test project that outputs a basic map with sample data.
+This project contains a sample app that outputs a map with test data.
 
 ## Authors
 
-* **Valerie Bright**
+* Valerie Bright
 
 ## License
 
