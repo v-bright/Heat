@@ -4,9 +4,9 @@
 
 Heat is a project that applies heat map data and annotations to an image retrieved using the Google Maps Static API.
 
-> Heat, static, map, generation, C#, NET
-
 ![Sample Image](https://github.com/v-bright/Heat/blob/master/SampleImage.png)
+
+> Heat, static, map, generation, C#, NET
 
 ### Dependencies
 
