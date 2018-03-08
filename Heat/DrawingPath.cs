@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Heat.Extensions;
 
 namespace Heat
 {
@@ -51,8 +52,8 @@ namespace Heat
 
         public override string ToString()
         {
-            var pathColorString = _pathColor.HasValue ? "color:" + HexConverter(_pathColor.Value) + "|" : string.Empty;
-            var pathFillColorString = _pathFillColor.HasValue ? "fillcolor:" + HexConverter(_pathFillColor.Value) + "|" : string.Empty;
+            var pathColorString = _pathColor.HasValue ? "color:" + _pathColor.Value.ToHexValue() + "|" : string.Empty;
+            var pathFillColorString = _pathFillColor.HasValue ? "fillcolor:" + _pathFillColor.Value.ToHexValue() + "|" : string.Empty;
             var geoDesicString = _geoDesic ? "geodesic:true|" : string.Empty;
             var pathWeightString = _pathWeight.HasValue ? "weight:" + _pathWeight.Value + "|" : string.Empty;
             var pathCoordinateString = string.Empty;
@@ -66,14 +67,15 @@ namespace Heat
                 pathCoordinateString += lat + "," + lng + "|";
             }
 
-            pathCoordinateString = pathCoordinateString.Remove(pathCoordinateString.Length - 1, 1);
+            if (pathCoordinateString[pathCoordinateString.Length-1] == '|')
+                pathCoordinateString = pathCoordinateString.Remove(pathCoordinateString.Length - 1, 1);
 
-            return "path="+pathColorString+pathFillColorString+pathWeightString+geoDesicString+pathCoordinateString;
-        }
+            var query = "path=" + pathColorString + pathFillColorString + pathWeightString + geoDesicString + pathCoordinateString;
 
-        private static string HexConverter(Color c)
-        {
-            return "0x" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2") + c.A.ToString("X2");
+            if (query[query.Length - 1] == '|')
+                query = query.Remove(query.Length - 1, 1);
+
+            return query;
         }
     }
 }

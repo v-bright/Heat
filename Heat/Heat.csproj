@@ -68,6 +68,32 @@
   <ItemGroup>
     <Compile Include="ColorSchemes\ColorScheme.cs" />
     <Compile Include="Dots\Dot.cs" />
+    <Compile Include="Elements\GeometryElement.cs" />
+    <Compile Include="Elements\IGeometryElement.cs" />
+    <Compile Include="Elements\ILabelsElement.cs" />
+    <Compile Include="Elements\ITextElement.cs" />
+    <Compile Include="Elements\LabelsElement.cs" />
+    <Compile Include="Elements\MapElement.cs" />
+    <Compile Include="Elements\TextElement.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Features\AdministrativeFeature.cs" />
+    <Compile Include="Features\MapFeature.cs" />
+    <Compile Include="Features\HighwayFeature.cs" />
+    <Compile Include="Features\IAdministrativeFeature.cs" />
+    <Compile Include="Features\IHighwayFeature.cs" />
+    <Compile Include="Features\ILandscapeFeature.cs" />
+    <Compile Include="Features\INaturalFeature.cs" />
+    <Compile Include="Features\IPoiFeature.cs" />
+    <Compile Include="Features\IRoadFeature.cs" />
+    <Compile Include="Features\IStationFeature.cs" />
+    <Compile Include="Features\ITransitFeature.cs" />
+    <Compile Include="Features\LandscapeFeature.cs" />
+    <Compile Include="Features\NaturalFeature.cs" />
+    <Compile Include="Features\PoiFeature.cs" />
+    <Compile Include="Features\RoadFeature.cs" />
+    <Compile Include="Features\StationFeature.cs" />
+    <Compile Include="Features\TransitFeature.cs" />
     <Compile Include="LongPoint.cs" />
     <Compile Include="LongSize.cs" />
     <Compile Include="Heatmap.cs" />
@@ -104,6 +130,9 @@
     <Compile Include="RectLatLng.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SizeLatLng.cs" />
+    <Compile Include="Styles\ElementVisibility.cs" />
+    <Compile Include="Styles\MapStyle.cs" />
+    <Compile Include="Styles\MapStyleOptions.cs" />
     <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>

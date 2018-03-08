@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Heat.ColorSchemes;
 using Heat.Dots;
+using Heat.Extensions;
+using Heat.Styles;
 
 namespace Heat
 {
@@ -264,10 +266,15 @@ namespace Heat
 
         public Task<Stream> GetMap(string mapType)
         {
-            return GetMap(mapType, null);
+            return GetMap(mapType, new MapStyle[]{});
         }
 
-        public Task<Stream> GetMap(string mapType, DrawingPath drawingPath)
+        public Task<Stream> GetMap(string mapType, params MapStyle[] mapStyles)
+        {
+            return GetMap(mapType, null, mapStyles);
+        }
+
+        public Task<Stream> GetMap(string mapType, DrawingPath drawingPath, params MapStyle[] mapStyles)
         {
             if (_imageDimensions.X > MaxFreeTierImageDimensions.X || _imageDimensions.Y > MaxFreeTierImageDimensions.Y)
                 throw new NotSupportedException("Images greater than " + MaxFreeTierImageDimensions.X + "x" +
@@ -285,6 +292,8 @@ namespace Heat
             if (drawingPath != null)
                 url += "&" + drawingPath;
 
+            url = mapStyles.Aggregate(url, (current, style) => current + ("&" + style));
+
             using (var wc = new WebClient())
             {
                 return wc.OpenReadTaskAsync(url);
@@ -293,10 +302,15 @@ namespace Heat
 
         public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType)
         {
-            return GetMap(googleClientId, googleSecretKey, mapType, null);
+            return GetMap(googleClientId, googleSecretKey, mapType, new MapStyle[] {});
         }
 
-        public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType, DrawingPath drawingPath)
+        public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType, params MapStyle[] mapStyles)
+        {
+            return GetMap(googleClientId, googleSecretKey, mapType, null, mapStyles);
+        }
+
+        public Task<Stream> GetMap(string googleClientId, string googleSecretKey, string mapType, DrawingPath drawingPath, params MapStyle[] mapStyles)
         {
             if (_imageDimensions.X > MaxPremiumTierImageDimensions.X ||
                 _imageDimensions.Y > MaxPremiumTierImageDimensions.Y)
@@ -314,6 +328,8 @@ namespace Heat
             if (drawingPath != null)
                 url += "&" + drawingPath;
 
+            url = mapStyles.Aggregate(url, (current, style) => current + ("&" + style));
+
             url = Sign(url, googleSecretKey);
 
             using (var wc = new WebClient())
@@ -323,17 +339,5 @@ namespace Heat
         }
 
         #endregion
-    }
-
-    public static class EnumerableExtensions
-    {
-        public static IEnumerable<Point> ToPoints(this IEnumerable<PointLatLng> source, LongPoint nwPixel, int zoom)
-        {
-            return source.Select(point =>
-            {
-                var pixelPos = MercatorProjection.Instance.FromLatLngToPixel(point, zoom);
-                return new Point((int) (pixelPos.X - nwPixel.X), (int) (pixelPos.Y - nwPixel.Y));
-            });
-        }
     }
 }
