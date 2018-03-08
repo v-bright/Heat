@@ -6,6 +6,8 @@ Heat is a project that applies heat map data and annotations to an image retriev
 
 > Heat, static, map, generation, C#, NET
 
+[[https://github.com/v-bright/Heat/blob/master/SampleImage.png|alt=SampleImage]]
+
 ### Dependencies
 
 * C# 5 or greater
